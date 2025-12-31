@@ -1,13 +1,16 @@
-[app]
-title = Mon Catalogue Tunisie
-package.name = cataloguetunisie
-package.domain = org.tunisie
-source.dir = .
-source.include_exts = py,png,jpg,kv,atlas
-version = 0.1
-requirements = python3,kivy,requests,urllib3,certifi,charset-normalizer,idna
-orientation = portrait
-fullscreen = 0
-android.permissions = INTERNET
-android.archs = arm64-v8a, armeabi-v7a
-android.allow_backup = True
+name: Build APK
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build with Buildozer
+        uses: ArtemSerebrennkov/buildozer-action@v1
+        with:
+          command: buildozer android debug
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: MonApplication
+          path: bin/*.apk
